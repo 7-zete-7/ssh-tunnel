@@ -1,5 +1,9 @@
 #!/usr/bin/env sh
 
+if [ -z ${LOCAL_PORT+x} ]; then
+	LOCAL_PORT=${REMOTE_SERVER_PORT}
+fi
+
 echo "[DEBUG] ssh-tunnel $*" >&2
 echo "[DEBUG] SSH_AUTH_SOCK=${SSH_AUTH_SOCK}" >&2
 
@@ -9,4 +13,10 @@ echo "[DEBUG] SSH_AUTH_SOCK=${SSH_AUTH_SOCK}" >&2
 	-o ServerAliveInterval=60 \
 	-o GatewayPorts=true \
 	-o ExitOnForwardFailure=yes \
-	"$@"
+	"$@" &
+
+SSH_PID=$!
+trap "kill -SIGINT ${SSH_PID}" SIGINT
+trap "kill -SIGTERM ${SSH_PID}" SIGTERM
+trap "kill -SIGSTOP ${SSH_PID}" SIGSTOP
+wait ${SSH_PID}

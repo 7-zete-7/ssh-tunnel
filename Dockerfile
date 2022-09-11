@@ -9,6 +9,9 @@ RUN --mount=type=cache,target=/var/cache/apk/ \
 COPY ./entrypoint.sh /usr/local/bin/docker-entrypoint
 RUN chmod +x /usr/local/bin/docker-entrypoint
 
+COPY ./healthcheck.sh /usr/local/bin/docker-healthcheck
+RUN chmod +x /usr/local/bin/docker-healthcheck
+
 COPY ./ssh-tunnel.sh /usr/local/bin/ssh-tunnel
 RUN chmod +x /usr/local/bin/ssh-tunnel
 
@@ -16,4 +19,5 @@ RUN chmod +x /usr/local/bin/ssh-tunnel
 RUN echo -e 'Host *\nUseRoaming no' >> /etc/ssh/ssh_config
 
 ENTRYPOINT ["docker-entrypoint"]
+HEALTHCHECK --interval=10s --timeout=3s --retries=3 CMD ["docker-healthcheck"]
 CMD ["ssh-tunnel"]
