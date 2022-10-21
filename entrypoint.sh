@@ -7,15 +7,14 @@ fi
 
 if [ "$1" = 'ssh' ] || [ "$1" = 'ssh-tunnel' ]; then
 	if [ ! -d ~/.ssh ]; then
-		mkdir --parents ~/.ssh
-		chmod --changes 0700 ~/.ssh
+		mkdir -m 0700 -p ~/.ssh
 	fi
 
 	if [ -d /ssh ]; then
-		cp --link --recursive --verbose /ssh/* ~/.ssh/
-		chown --changes --recursive "${UID}:${GID}" ~/.ssh
-		find ~/.ssh -type d -print0 | xargs -0 @chmod --changes 0700
-		find ~/.ssh -type f -print0 | xargs -0 @chmod --changes 0600
+		cp -R /ssh/* ~/.ssh/
+		chown -Rc "$(id -u):$(id -g)" ~/.ssh
+		find ~/.ssh -type d -print0 | xargs -0 chmod -c 0700 2>/dev/null
+		find ~/.ssh -type f -print0 | xargs -0 chmod -c 0600 2>/dev/null
 	fi
 
 	if [ -z ${SSH_SERVER_HOST+x} ]; then
@@ -30,7 +29,7 @@ if [ "$1" = 'ssh' ] || [ "$1" = 'ssh-tunnel' ]; then
 
 	if [ ! -f ~/.ssh/known_hosts ]; then
 		ssh-keyscan -p "${SSH_SERVER_PORT}" -H "${SSH_SERVER_HOST}" 1>> ~/.ssh/known_hosts 2>/dev/null
-		chmod 0600 ~/.ssh/known_hosts
+		chmod -c 0600 ~/.ssh/known_hosts
 	fi
 
 	if [ -z ${SSH_SERVER_USER+x} ]; then
