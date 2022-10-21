@@ -1,7 +1,6 @@
 #!/usr/bin/env sh
 
-if [ "${1#-}" != "$1" ]
-then
+if [ "${1#-}" != "$1" ]; then
 	set -- ssh-tunnel "$@"
 fi
 
@@ -33,6 +32,7 @@ if [ "$1" = 'ssh' ] || [ "$1" = 'ssh-tunnel' ]; then
 	if [ ! -f ~/.ssh/known_hosts ]; then
 		echo "[DEBUG] Generating ${HOME}/.ssh/known_hosts file" >&2
 		ssh-keyscan -p "${SSH_SERVER_PORT}" -H "${SSH_SERVER_HOST}" 1>> ~/.ssh/known_hosts 2>/dev/null
+		cat ~/.ssh/known_hosts
 		chmod -c 0600 ~/.ssh/known_hosts
 	fi
 
@@ -41,20 +41,17 @@ if [ "$1" = 'ssh' ] || [ "$1" = 'ssh-tunnel' ]; then
 		exit 1
 	fi
 
-	if [ -z ${REMOTE_SERVER_HOST+x} ]
-	then
+	if [ -z ${REMOTE_SERVER_HOST+x} ]; then
 		echo '[INFO] The standard host "localhost" for remote server will be used. To set a custom host, set the REMOTE_SERVER_HOST environment variable.' >&2
 		REMOTE_SERVER_HOST=localhost
 	fi
 
-	if [ -z ${REMOTE_SERVER_PORT+x} ]
-	then
+	if [ -z ${REMOTE_SERVER_PORT+x} ]; then
 		echo '[ERROR] The required environment variable REMOTE_SERVER_PORT has not been set.' >&2
 		exit 1
 	fi
 
-	if [ -z ${LOCAL_PORT+x} ]
-	then
+	if [ -z ${LOCAL_PORT+x} ]; then
 		echo "[INFO] The similar port ${REMOTE_SERVER_PORT} for local tunnel will be used. To set a custom port, set then LOCAL_PORT environment variable." >&2
 		LOCAL_PORT=${REMOTE_SERVER_PORT}
 	fi

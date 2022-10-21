@@ -4,7 +4,7 @@ if [ -z ${LOCAL_PORT+x} ]; then
 	LOCAL_PORT=${REMOTE_SERVER_PORT}
 fi
 
-if [ -z ${SSH_AUTH_SOCK+x} ]; then
+if [ ! -z ${SSH_AUTH_SOCK+x} ]; then
 	echo "[INFO] SSH_AUTH_SOCK=${SSH_AUTH_SOCK}" >&2
 fi
 
