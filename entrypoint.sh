@@ -7,8 +7,15 @@ fi
 
 if [ "$1" = 'ssh' ] || [ "$1" = 'ssh-tunnel' ]; then
 	if [ ! -d ~/.ssh ]; then
-		mkdir -p ~/.ssh
-		chmod 0700 ~/.ssh
+		mkdir --parents ~/.ssh
+		chmod --changes 0700 ~/.ssh
+	fi
+
+	if [ -d /ssh ]; then
+		cp --link --recursive --verbose /ssh/* ~/.ssh/
+		chown --changes --recursive "${UID}:${GID}" ~/.ssh
+		find ~/.ssh -type d -print0 | xargs -0 @chmod --changes 0700
+		find ~/.ssh -type f -print0 | xargs -0 @chmod --changes 0600
 	fi
 
 	if [ -z ${SSH_SERVER_HOST+x} ]; then
