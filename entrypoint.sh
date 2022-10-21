@@ -7,14 +7,17 @@ fi
 
 if [ "$1" = 'ssh' ] || [ "$1" = 'ssh-tunnel' ]; then
 	if [ ! -d ~/.ssh ]; then
+		echo "[DEBUG] Create ${HOME}/.ssh directory" >&2
 		mkdir -m 0700 -p ~/.ssh
 	fi
 
 	if [ -d /ssh ]; then
+		echo "[DEBUG] Copying /ssh directory contents into ${HOME}/.ssh directory" >&2
 		cp -R /ssh/* ~/.ssh/
 		chown -Rc "$(id -u):$(id -g)" ~/.ssh
 		find ~/.ssh -type d -print0 | xargs -0 chmod -c 0700 2>/dev/null
 		find ~/.ssh -type f -print0 | xargs -0 chmod -c 0600 2>/dev/null
+		ls -la ~/.ssh >&2
 	fi
 
 	if [ -z ${SSH_SERVER_HOST+x} ]; then
@@ -23,11 +26,12 @@ if [ "$1" = 'ssh' ] || [ "$1" = 'ssh-tunnel' ]; then
 	fi
 
 	if [ -z ${SSH_SERVER_PORT+x} ]; then
-		echo ' [INFO] The standard port 22 for SSH server will be used. To set a custom port, set the SSH_SERVER_PORT environment variable.' >&2
+		echo '[INFO] The standard port 22 for SSH server will be used. To set a custom port, set the SSH_SERVER_PORT environment variable.' >&2
 		SSH_SERVER_PORT=22
 	fi
 
 	if [ ! -f ~/.ssh/known_hosts ]; then
+		echo "[DEBUG] Generating ${HOME}/.ssh/known_hosts file" >&2
 		ssh-keyscan -p "${SSH_SERVER_PORT}" -H "${SSH_SERVER_HOST}" 1>> ~/.ssh/known_hosts 2>/dev/null
 		chmod -c 0600 ~/.ssh/known_hosts
 	fi
@@ -39,7 +43,7 @@ if [ "$1" = 'ssh' ] || [ "$1" = 'ssh-tunnel' ]; then
 
 	if [ -z ${REMOTE_SERVER_HOST+x} ]
 	then
-		echo ' [INFO] The standard host "localhost" for remote server will be used. To set a custom host, set the REMOTE_SERVER_HOST environment variable.' >&2
+		echo '[INFO] The standard host "localhost" for remote server will be used. To set a custom host, set the REMOTE_SERVER_HOST environment variable.' >&2
 		REMOTE_SERVER_HOST=localhost
 	fi
 
@@ -51,7 +55,7 @@ if [ "$1" = 'ssh' ] || [ "$1" = 'ssh-tunnel' ]; then
 
 	if [ -z ${LOCAL_PORT+x} ]
 	then
-		echo " [INFO] The similar port ${REMOTE_SERVER_PORT} for local tunnel will be used. To set a custom port, set then LOCAL_PORT environment variable." >&2
+		echo "[INFO] The similar port ${REMOTE_SERVER_PORT} for local tunnel will be used. To set a custom port, set then LOCAL_PORT environment variable." >&2
 		LOCAL_PORT=${REMOTE_SERVER_PORT}
 	fi
 

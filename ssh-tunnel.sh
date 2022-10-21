@@ -4,8 +4,11 @@ if [ -z ${LOCAL_PORT+x} ]; then
 	LOCAL_PORT=${REMOTE_SERVER_PORT}
 fi
 
+if [ -z ${SSH_AUTH_SOCK+x} ]; then
+	echo "[INFO] SSH_AUTH_SOCK=${SSH_AUTH_SOCK}" >&2
+fi
+
 echo "[DEBUG] ssh-tunnel $*" >&2
-echo "[DEBUG] SSH_AUTH_SOCK=${SSH_AUTH_SOCK}" >&2
 
 #	-o StrictHostKeyChecking=no \
 /usr/bin/ssh \
