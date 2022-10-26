@@ -1,12 +1,12 @@
 #!/usr/bin/env sh
 
-if [ -z ${LOCAL_PORT+x} ]; then
-	if [ -z ${REMOTE_SERVER_PORT} ]; then
+if [ -z "${LOCAL_PORT+x}" ]; then
+	if [ -z "${REMOTE_SERVER_PORT}" ]; then
 		echo '[ERROR] The required LOCAL_PORT or REMOTE_SERVER_PORT environment variable has not been set.' >&2
 		exit 1
 	fi
 
-	LOCAL_PORT=${REMOTE_SERVER_PORT}
+	LOCAL_PORT="${REMOTE_SERVER_PORT}"
 fi
 
 case "${HEALTHCHECK:-soft}" in

@@ -19,12 +19,12 @@ if [ "$1" = 'ssh' ] || [ "$1" = 'ssh-tunnel' ]; then
 		ls -la ~/.ssh >&2
 	fi
 
-	if [ -z ${SSH_SERVER_HOST+x} ]; then
+	if [ -z "${SSH_SERVER_HOST+x}" ]; then
 		echo '[ERROR] The required environment variable SSH_SERVER_HOST has not been set.' >&2
 		exit 1
 	fi
 
-	if [ -z ${SSH_SERVER_PORT+x} ]; then
+	if [ -z "${SSH_SERVER_PORT+x}" ]; then
 		echo '[INFO] The standard port 22 for SSH server will be used. To set a custom port, set the SSH_SERVER_PORT environment variable.' >&2
 		SSH_SERVER_PORT=22
 	fi
@@ -36,27 +36,27 @@ if [ "$1" = 'ssh' ] || [ "$1" = 'ssh-tunnel' ]; then
 		chmod -c 0600 ~/.ssh/known_hosts
 	fi
 
-	if [ -z ${SSH_SERVER_USER+x} ]; then
+	if [ -z "${SSH_SERVER_USER+x}" ]; then
 		echo '[ERROR] The required environment variable SSH_SERVER_USER has not been set.' >&2
 		exit 1
 	fi
 
-	if [ -z ${REMOTE_SERVER_HOST+x} ]; then
+	if [ -z "${REMOTE_SERVER_HOST+x}" ]; then
 		echo '[INFO] The standard host "localhost" for remote server will be used. To set a custom host, set the REMOTE_SERVER_HOST environment variable.' >&2
 		REMOTE_SERVER_HOST=localhost
 	fi
 
-	if [ -z ${REMOTE_SERVER_PORT+x} ]; then
+	if [ -z "${REMOTE_SERVER_PORT+x}" ]; then
 		echo '[ERROR] The required environment variable REMOTE_SERVER_PORT has not been set.' >&2
 		exit 1
 	fi
 
-	if [ -z ${LOCAL_PORT+x} ]; then
+	if [ -z "${LOCAL_PORT+x}" ]; then
 		echo "[INFO] The similar port ${REMOTE_SERVER_PORT} for local tunnel will be used. To set a custom port, set then LOCAL_PORT environment variable." >&2
 		LOCAL_PORT=${REMOTE_SERVER_PORT}
 	fi
 
-	if [ -n ${HEALTHCHECK+x} ]; then
+	if [ -n "${HEALTHCHECK+x}" ]; then
 		echo "[DEBUG] Healthcheck type is overrides by \"${HEALTHCHECK}\" value." >&2
 	else
 		echo '[INFO] The standard healthcheck type "soft" will be used.' >&2
