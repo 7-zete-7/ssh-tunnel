@@ -19,5 +19,6 @@ RUN chmod +x /usr/local/bin/ssh-tunnel
 RUN echo -e 'Host *\nUseRoaming no' >> /etc/ssh/ssh_config
 
 ENTRYPOINT ["docker-entrypoint"]
-HEALTHCHECK --interval=10s --timeout=3s --retries=3 CMD ["docker-healthcheck"]
+HEALTHCHECK --interval=2s --timeout=1s --start-period=1s --retries=10 \
+	CMD ["docker-healthcheck"]
 CMD ["ssh-tunnel"]
