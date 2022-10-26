@@ -1,4 +1,4 @@
-# syntax=docker/dockerfile:1
+# syntax=docker/dockerfile:1.4
 
 ARG ALPINE_VERSION=3.16
 
@@ -8,13 +8,13 @@ MAINTAINER Stanislau Kviatkouski <7zete7@gmail.com>
 RUN --mount=type=cache,target=/var/cache/apk/ \
 	apk add openssh-client
 
-COPY ./entrypoint.sh /usr/local/bin/docker-entrypoint
+COPY --link ./entrypoint.sh /usr/local/bin/docker-entrypoint
 RUN chmod +x /usr/local/bin/docker-entrypoint
 
-COPY ./healthcheck.sh /usr/local/bin/docker-healthcheck
+COPY --link ./healthcheck.sh /usr/local/bin/docker-healthcheck
 RUN chmod +x /usr/local/bin/docker-healthcheck
 
-COPY ./ssh-tunnel.sh /usr/local/bin/ssh-tunnel
+COPY --link ./ssh-tunnel.sh /usr/local/bin/ssh-tunnel
 RUN chmod +x /usr/local/bin/ssh-tunnel
 
 # Security fix for CVE-2016-0777 and CVE-2016-0778
