@@ -56,6 +56,13 @@ if [ "$1" = 'ssh' ] || [ "$1" = 'ssh-tunnel' ]; then
 		LOCAL_PORT=${REMOTE_SERVER_PORT}
 	fi
 
+	if [ -n ${HEALTHCHECK+x} ]; then
+		echo "[DEBUG] Healthcheck type is overrides by \"${HEALTHCHECK}\" value." >&2
+	else
+		echo '[INFO] The standard healthcheck type "soft" will be used.' >&2
+		HEALTHCHECK='soft'
+	fi
+
 	echo "[DEBUG] Set args: -L ${LOCAL_PORT}:${REMOTE_SERVER_HOST}:${REMOTE_SERVER_PORT} -p ${SSH_SERVER_PORT} ${SSH_SERVER_USER}@${SSH_SERVER_HOST}" >&2
 	set -- "$@" -L "${LOCAL_PORT}:${REMOTE_SERVER_HOST}:${REMOTE_SERVER_PORT}" -p "${SSH_SERVER_PORT}" "${SSH_SERVER_USER}@${SSH_SERVER_HOST}"
 fi

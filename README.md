@@ -10,6 +10,11 @@
 - `REMOTE_SERVER_HOST` — Target service host for tunneling it. Can be hostname or IP address. Optional. Default value `localhost`.
 - `REMOTE_SERVER_PORT` — Target service port for tunneling it. Must be valid integer port number. Required.
 - `LOCAL_PORT` — Tunneled service port number of container. Must be valid integer port number. Optional. Default value same as `REMOTE_SERVER_PORT`.
+- `HEALTHCHECK` — Set healthcheck level for forwarded port. Optional. Default value `soft`.
+  Possible values:
+  - `none` — Disables healthcheck by always saying _"health"_.
+  - `soft` — Checks port listening (by using `netstat`).
+  - `hard` — Checks port opening (by using `nc`). Can emit handshake issues on authorize-able services.
 
 Also, can be added additional environment variables for `ssh` command. See _Environment_ article [ssh(1)](https://linux.die.net/man/1/ssh) manual page.
 
