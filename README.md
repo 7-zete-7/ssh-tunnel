@@ -38,6 +38,7 @@ docker run --rm \
     -e SSH_SERVER_USER=my-user \
     -e REMOTE_SERVER_PORT=3306 \
     -v '~/.ssh:/ssh:ro' \
+    -p '127.0.0.1:3306:3306/tcp' \
     7-zete-7/ssh-tunnel:latest
 ```
 
@@ -56,6 +57,11 @@ services:
       SSH_SERVER_HOST: my-host.example
       SSH_SERVER_USER: my-user
       REMOTE_SERVER_PORT: 3306
+    ports:
+      - target: 3306
+        published: 3306
+        protocol: tcp
+        host_ip: 127.0.0.1
 
   app:
     image: ...
